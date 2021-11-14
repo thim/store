@@ -27,13 +27,13 @@ class AppInject {
 }
 
 T inject<T>() {
-  return AppInject.instance.get();
+  return AppInject.instance.get<T>();
 }
 
 void registerDependency<T>(InjectBuilder<T> builder) {
-  AppInject.instance.registerDependency(builder);
+  AppInject.instance.registerDependency<T>(builder);
 }
 
 void registerSingleton<T>(InjectBuilder<T> builder, {bool override = false}) {
-  AppInject.instance.registerSingleton(builder, override: override);
+  AppInject.instance.registerSingleton<T>(builder, override: override);
 }

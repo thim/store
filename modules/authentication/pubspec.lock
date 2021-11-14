@@ -8,13 +8,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.8.1"
-  authentication:
-    dependency: "direct main"
-    description:
-      path: "../modules/authentication"
-      relative: true
-    source: path
-    version: "1.0.0+1"
   boolean_selector:
     dependency: transitive
     description:
@@ -22,13 +15,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  catalog:
-    dependency: "direct main"
-    description:
-      path: "../modules/catalog"
-      relative: true
-    source: path
-    version: "1.0.0"
   characters:
     dependency: transitive
     description:
@@ -60,7 +46,7 @@ packages:
   core:
     dependency: "direct main"
     description:
-      path: "../modules/core"
+      path: "../core"
       relative: true
     source: path
     version: "1.0.0"

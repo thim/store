@@ -19,4 +19,7 @@ ThemeData appTheme(BuildContext context) => ThemeData(
     buttonTheme: ButtonThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.desire), padding: MaterialStateProperty.all(const EdgeInsets.all(24)))),
     colorScheme: ColorScheme.fromSwatch().copyWith(secondary: AppColors.desire));

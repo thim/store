@@ -1,6 +1,8 @@
 import 'package:core/core_style.dart';
 import 'package:flutter/material.dart';
 
+import '../app_boot.dart';
+
 class SplashPage extends StatefulWidget {
   static var route = "/splash";
 
@@ -28,19 +30,11 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    bootStrap();
+    bootStrap(context);
   }
 
   @override
   void dispose() {
     super.dispose();
-  }
-
-  Future<void> bootStrap() async {
-    await Future.delayed(const Duration(seconds: 1));
-
-    // initialize everything here.
-
-    Navigator.of(context).pushReplacementNamed("/home");
   }
 }
