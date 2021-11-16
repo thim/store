@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Store',
       theme: appTheme(context),
       home: const SplashPage(),
-      routes: flutterModule.moduleRoutes.routes,
+      routes: moduleRoutes.routes,
     );
   }
 }

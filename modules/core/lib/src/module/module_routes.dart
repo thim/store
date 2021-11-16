@@ -1,7 +1,13 @@
 import 'package:flutter/widgets.dart';
 
-abstract class ModuleRoute {
-  Map<String, WidgetBuilder> routes();
+import 'module_di.dart';
+
+class ModuleRoute implements ModuleBase {
+  final Map<String, WidgetBuilder> Function() _run;
+
+  ModuleRoute(this._run);
+
+  Map<String, WidgetBuilder> routes() => _run();
 }
 
 class RouteGroup {
@@ -15,3 +21,5 @@ class RouteGroup {
     _routes.addAll(module.routes());
   }
 }
+
+final moduleRoutes = RouteGroup();

@@ -1,15 +1,53 @@
-import 'package:core/src/core_di.dart';
-
+import '../core_di.dart';
 import '../infra/injector.dart';
+import 'module_lifecycle.dart';
 
-abstract class ModuleDI {
-  Future<void> registerInject(AppInject injector);
+abstract class ModuleBase {
+  factory ModuleBase.di(Future<void> Function(AppInject) func) => ModuleDI(func);
+
+  factory ModuleBase.boot(Future<void> Function(Map) func) => ModuleBoot(func);
 }
 
-Future<void> initModules(Iterable<ModuleDI> modules) async {
-  await CoreDI().registerInject(AppInject.instance);
+class ModuleDI implements ModuleBase {
+  final Future<void> Function(AppInject) _run;
 
-  for (ModuleDI module in modules) {
-    await module.registerInject(AppInject.instance);
+  ModuleDI(this._run);
+
+  Future<void> run(AppInject inject) => _run(inject);
+}
+
+class ModuleBoot implements ModuleBase {
+  final Future<void> Function(Map) _run;
+
+  ModuleBoot(this._run);
+
+  Future<void> run(Map map) => _run(map);
+}
+
+typedef ModuleBuilder = List<ModuleBase> Function();
+
+class CoreModule {
+  Future<Map> init(List<ModuleBuilder> builders) async {
+    builders.insert(0, coreDIModule);
+    final modules = builders.map((build) => build.call()).expand((module) => module);
+
+    for (ModuleBase module in modules) {
+      if (module is ModuleDI) {
+        await module.run(AppInject.instance);
+      }
+
+      if (module is ModuleLifecycle) {
+        moduleLifecycle.register(module);
+      }
+    }
+
+    final Map result = {};
+    for (ModuleBoot module in modules.whereType<ModuleBoot>()) {
+      await module.run(result);
+    }
+
+    return result;
   }
 }
+
+final moduleLifecycle = LifecycleGroup();

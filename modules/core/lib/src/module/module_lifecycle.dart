@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:core/core.dart';
+
 typedef LifecycleBuilder = LifecycleCallback Function();
 
 abstract class LifecycleCallback {
@@ -20,7 +22,7 @@ class ModuleUserData {
   );
 }
 
-abstract class ModuleLifecycle {
+abstract class ModuleLifecycle implements ModuleBase {
   LifecycleBuilder get lifecycle;
 }
 

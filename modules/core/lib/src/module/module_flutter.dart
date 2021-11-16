@@ -1,35 +1,27 @@
-import '../core_di.dart';
-import '../infra/injector.dart';
 import '../module/module_di.dart';
-import '../module/module_lifecycle.dart';
-import 'module_boot.dart';
 import 'module_routes.dart';
 
-class FlutterModule {
-  final moduleRoutes = RouteGroup();
-  final moduleLifecycle = LifecycleGroup();
+class ModuleBuild {
+  final List<ModuleBase> modules;
 
-  Future<Map> init(List<ModuleDI> modules) async {
-    await CoreDI().registerInject(AppInject.instance);
+  String get id => runtimeType.toString();
 
-    for (ModuleDI module in modules) {
-      await module.registerInject(AppInject.instance);
+  ModuleBuild(this.modules);
+}
 
+class FlutterModule extends CoreModule {
+  @override
+  Future<Map> init(List<ModuleBuilder> builders) {
+    final map = super.init(builders);
+
+    final modules = builders.map((build) => build.call()).expand((module) => module);
+    for (ModuleBase module in modules) {
       if (module is ModuleRoute) {
-        moduleRoutes.register(module as ModuleRoute);
-      }
-
-      if (module is ModuleLifecycle) {
-        moduleLifecycle.register(module as ModuleLifecycle);
+        moduleRoutes.register(module);
       }
     }
 
-    final Map result = {};
-    for (ModuleBoot module in modules.whereType<ModuleBoot>()) {
-      await module.boot(result);
-    }
-
-    return result;
+    return map;
   }
 }
 

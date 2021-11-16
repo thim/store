@@ -18,11 +18,13 @@ class LoginBloc {
 
   void loginSendEmail(String user, String password) async {
     if (user == "user") {
-      await flutterModule.moduleLifecycle.onUserUpdated(ModuleUserData("123", user));
+      analytics.sendEvent(TrackData("login_success", {"user": user}));
+      await moduleLifecycle.onUserUpdated(ModuleUserData("123", user));
 
       step = ScreenStep.signIn;
       _navigateStream.add(step);
     } else {
+      analytics.sendEvent(TrackData("login_fail", {"user": user}));
       _messageStream.add("Falha na autenticação. Dica: user / user.");
     }
   }

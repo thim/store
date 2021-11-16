@@ -1,15 +1,28 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
 .DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
 .dart_tool/
 
 .packages
 .pub/
 
-.idea/
+
 .vagrant/
 .sconsign.dblite
-.svn/
-
-*.swp
 profile
 
 DerivedData/
@@ -30,7 +43,6 @@ xcuserdata
 
 *.moved-aside
 
-*.pyc
 *sync/
 Icon?
 .tags*
