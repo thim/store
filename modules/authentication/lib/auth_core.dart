@@ -4,8 +4,8 @@ import 'package:core/core.dart';
 import 'src/data/refresh_token.dart';
 
 List<ModuleBase> authCoreModules() => [
-      ModuleBase.di((injector) async {
-        injector.registerDependency<RefreshTokenUseCase>(() => RefreshToken());
+      ModuleBase.di(() async {
+        registerDependency<RefreshTokenUseCase>(() => RefreshToken());
       }),
       ModuleBase.boot((map) async {
         final refreshToken = inject<RefreshTokenUseCase>();
@@ -13,6 +13,8 @@ List<ModuleBase> authCoreModules() => [
         if (!refreshed) {
           await moduleLifecycle.onLogout();
         }
-        map["refreshed"] = refreshed;
+        map[refreshedKey] = refreshed;
       })
     ];
+
+const String refreshedKey = "refreshed";

@@ -1,11 +1,14 @@
+import 'package:authentication/auth_core.dart';
 import 'package:core/core.dart';
 
 List<ModuleBase> appCoreModules() => [
       ModuleBase.boot((map) async {
-        if (map["refreshed"]) {
-          map["initialRoute"] = RouteParams("/home", {});
+        if (map[refreshedKey]) {
+          map[initialRouteKey] = RouteParams("/home", {});
         } else {
-          map["initialRoute"] = RouteParams("/login", {"nextPage": "/home"});
+          map[initialRouteKey] = RouteParams("/login", {"nextPage": "/home"});
         }
       }),
     ];
+
+const String initialRouteKey = "initialRoute";

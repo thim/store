@@ -3,17 +3,17 @@ import '../infra/injector.dart';
 import 'module_lifecycle.dart';
 
 abstract class ModuleBase {
-  factory ModuleBase.di(Future<void> Function(AppInject) func) => ModuleDI(func);
+  factory ModuleBase.di(Future<void> Function() func) => ModuleDI(func);
 
   factory ModuleBase.boot(Future<void> Function(Map) func) => ModuleBoot(func);
 }
 
 class ModuleDI implements ModuleBase {
-  final Future<void> Function(AppInject) _run;
+  final Future<void> Function() _run;
 
   ModuleDI(this._run);
 
-  Future<void> run(AppInject inject) => _run(inject);
+  Future<void> run() => _run();
 }
 
 class ModuleBoot implements ModuleBase {
@@ -33,7 +33,7 @@ class CoreModule {
 
     for (ModuleBase module in modules) {
       if (module is ModuleDI) {
-        await module.run(AppInject.instance);
+        await module.run();
       }
 
       if (module is ModuleLifecycle) {

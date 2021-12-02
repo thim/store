@@ -16,9 +16,9 @@ class Analytics {
     _providers.addAll(list);
   }
 
-  Future<void> sendEvent(TrackData data) async {
+  void sendEvent(TrackData data) {
     for (AnalyticsProvider provider in _providers) {
-      await provider.sendEvent(data);
+      provider.sendEvent(data);
     }
   }
 }
