@@ -22,7 +22,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    final Object? settingsArgs = ModalRoute.of(context)?.settings.arguments;
+    final args = settingsArgs is Map ? settingsArgs : {};
 
     _bloc.navigate.distinct().listen((value) {
       Navigator.of(context).pushReplacementNamed(args["nextPage"]);
@@ -77,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             switch (_bloc.step) {
                               case ScreenStep.signOut:
-                                _bloc.loginSendEmail(userController.text, passController.text);
+                                _bloc.login(userController.text, passController.text);
                                 break;
                               case ScreenStep.signIn:
                                 _bloc.logout();

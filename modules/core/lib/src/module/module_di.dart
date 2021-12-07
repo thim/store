@@ -1,5 +1,4 @@
 import '../core_di.dart';
-import '../infra/injector.dart';
 import 'module_lifecycle.dart';
 
 abstract class ModuleBase {

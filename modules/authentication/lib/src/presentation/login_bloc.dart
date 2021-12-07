@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:core/core.dart';
 import 'package:core/core_flutter.dart';
 
-class LoginBloc {
-  final _navigateStream = StreamController<ScreenStep>.broadcast();
+import '../domain/authentication_usecase.dart';
 
+class LoginBloc {
+  final _authUseCase = inject<AuthenticationUseCase>();
+  final _navigateStream = StreamController<ScreenStep>.broadcast();
   final _messageStream = StreamController<String>.broadcast();
 
   Stream<ScreenStep> get navigate => _navigateStream.stream;
@@ -16,9 +18,12 @@ class LoginBloc {
 
   LoginBloc();
 
-  void loginSendEmail(String user, String password) async {
-    if (user == "user") {
+  Future<void> login(String user, String password) async {
+    final auth = await _authUseCase.login(user, password);
+
+    if (auth) {
       analytics.sendEvent(TrackData("login_success", {"user": user}));
+
       await moduleLifecycle.onUserUpdated(ModuleUserData("123", user));
 
       step = ScreenStep.signIn;
@@ -30,7 +35,7 @@ class LoginBloc {
   }
 
   void logout() {
-    //_login.logout();
+    _authUseCase.logout();
     _navigateStream.add(ScreenStep.signOut);
   }
 

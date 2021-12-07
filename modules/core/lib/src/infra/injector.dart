@@ -30,8 +30,8 @@ T inject<T>() {
   return AppInject.instance.get<T>();
 }
 
-void registerDependency<T>(InjectBuilder<T> builder) {
-  AppInject.instance.registerDependency<T>(builder);
+void registerDependency<T>(InjectBuilder<T> builder, {bool override = false}) {
+  AppInject.instance.registerDependency<T>(builder, override: override);
 }
 
 void registerSingleton<T>(InjectBuilder<T> builder, {bool override = false}) {
