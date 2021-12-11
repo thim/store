@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('Use Case Group', () {
+  group('Widget Group', () {
     setUpAll(() async {
       await CoreModule().init([authCoreModules]);
     });

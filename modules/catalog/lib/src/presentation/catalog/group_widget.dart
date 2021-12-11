@@ -28,6 +28,7 @@ class GroupList extends StatelessWidget {
               )),
           const Divider(color: AppColors.greyRegular),
           ListView.builder(
+            primary: false,
             shrinkWrap: true,
             itemCount: _list.length,
             itemBuilder: (BuildContext context, int index) {
