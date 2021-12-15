@@ -5,6 +5,8 @@ abstract class ModuleBase {
   factory ModuleBase.di(Future<void> Function() func) => ModuleDI(func);
 
   factory ModuleBase.boot(Future<void> Function(Map) func) => ModuleBoot(func);
+
+  factory ModuleBase.lifecycle(LifecycleBuilder lifecycle) => ModuleLifecycle(lifecycle);
 }
 
 class ModuleDI implements ModuleBase {
@@ -48,5 +50,3 @@ class CoreModule {
     return result;
   }
 }
-
-final moduleLifecycle = LifecycleGroup();

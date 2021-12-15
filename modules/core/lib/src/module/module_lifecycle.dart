@@ -22,8 +22,12 @@ class ModuleUserData {
   );
 }
 
-abstract class ModuleLifecycle implements ModuleBase {
-  LifecycleBuilder get lifecycle;
+class ModuleLifecycle implements ModuleBase {
+  final LifecycleBuilder _lifecycle;
+
+  ModuleLifecycle(this._lifecycle);
+
+  LifecycleBuilder get lifecycle => _lifecycle;
 }
 
 class LifecycleGroup {
@@ -49,3 +53,5 @@ class LifecycleGroup {
     }
   }
 }
+
+final moduleLifecycle = LifecycleGroup();
