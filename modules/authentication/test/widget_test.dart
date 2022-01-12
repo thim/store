@@ -5,14 +5,23 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../core/test/mock.dart';
+
 void main() {
+  final loginMock = FakeAuthentication();
+
   group('Widget Group', () {
     setUpAll(() async {
       await CoreModule().init([authCoreModules]);
+      registerDependency<AuthenticationUseCase>(() => loginMock, override: true);
     });
 
+    setUp(() => clearMock());
+
     testWidgets('authentication successful', (WidgetTester tester) async {
-      registerDependency<AuthenticationUseCase>(() => FakeAuthentication(true), override: true);
+      mock<Future<bool>>(loginMock.login, () {
+        return Future.value(true);
+      });
 
       final routeObserver = MyRouteObserver();
 
@@ -39,7 +48,9 @@ void main() {
     });
 
     testWidgets('authentication failed', (WidgetTester tester) async {
-      registerDependency<AuthenticationUseCase>(() => FakeAuthentication(false), override: true);
+      // mock<Future<bool>>(loginMock.login, () {
+      //   return Future.value(false);
+      // });
 
       await tester.pumpWidget(MaterialApp(
         home: Navigator(
@@ -99,10 +110,12 @@ class MyRouteObserver extends NavigatorObserver {
   }
 }
 
-class FakeAuthentication implements AuthenticationUseCase {
+class FakeAuthentication extends Mock implements AuthenticationUseCase {}
+
+class FakeAuthentication2 implements AuthenticationUseCase {
   final bool loginResult;
 
-  FakeAuthentication(this.loginResult);
+  FakeAuthentication2(this.loginResult);
 
   @override
   Future<bool> login(String user, String password) async {

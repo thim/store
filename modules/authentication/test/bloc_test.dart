@@ -5,6 +5,10 @@ import 'package:authentication/src/presentation/login_bloc.dart';
 import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../core/test/mock.dart';
+
+class AnalyticsMock extends Mock implements AnalyticsProvider {}
+
 void main() {
   final analyticsMock = AnalyticsMock();
 
@@ -15,7 +19,7 @@ void main() {
     });
 
     setUp(() {
-      analyticsMock.clear();
+      clearMock();
     });
 
     test("authentication failed", () async {
@@ -26,14 +30,17 @@ void main() {
         completer.complete(event);
       });
 
+      mock<Future<void>>(analyticsMock.sendEvent, () {
+        return Future.value();
+      });
+
       await bloc.login("wrongUser", "wrongPassword");
 
-      expect(analyticsMock.counter, 1);
-      expect(
-        analyticsMock.data?.name,
-        "login_fail",
-      );
       expect(await completer.future, "Falha na autenticação. Dica: user / user.");
+
+      verify(analyticsMock.sendEvent, 1);
+
+      check<TrackData>((param) => param.name == "login_fail");
     });
 
     test("authentication successful", () async {
@@ -44,30 +51,17 @@ void main() {
         completer.complete(event);
       });
 
+      mock<Future<void>>(analyticsMock.sendEvent, () {
+        return Future.value();
+      });
+
       await bloc.login("user", "password");
 
-      expect(analyticsMock.counter, 1);
-      expect(
-        analyticsMock.data?.name,
-        "login_success",
-      );
+      verify(analyticsMock.sendEvent, 1);
+
+      check<TrackData>((param) => param.name == "login_success");
+
       expect(await completer.future, ScreenStep.signIn);
     });
   });
-}
-
-class AnalyticsMock implements AnalyticsProvider {
-  int counter = 0;
-  TrackData? data;
-
-  void clear() {
-    counter = 0;
-    data = null;
-  }
-
-  @override
-  Future<void> sendEvent(TrackData data) async {
-    counter++;
-    this.data = data;
-  }
 }
