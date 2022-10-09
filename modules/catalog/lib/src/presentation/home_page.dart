@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../domain/data.dart';
 import 'catalog/catalog_widget.dart';
+import 'catalog/edit_widget.dart';
 import 'catalog/group_widget.dart';
 import 'catalog/search_widget.dart';
 import 'home_bloc.dart';
@@ -79,7 +80,7 @@ class Menu extends StatelessWidget {
                   size: 24.0,
                 ),
                 onTap: () async {
-                  final result = await openModal(context, BaasboxData(id: "123", fields: {}), mockGroup);
+                  final result = await EditWidget.openModal(context, BaasboxData(id: "123", fields: {}), mockGroup);
                   if (result != null) {
                     _bloc.add(result);
                   }

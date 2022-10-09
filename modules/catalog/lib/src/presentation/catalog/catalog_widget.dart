@@ -2,7 +2,8 @@ import 'package:catalog/src/domain/data.dart';
 import 'package:catalog/src/presentation/form/form_extension.dart';
 import 'package:core/core_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+import 'edit_widget.dart';
 
 class CatalogList extends StatelessWidget {
   final List<BaasboxData> _list;
@@ -104,193 +105,11 @@ class CatalogItem extends StatelessWidget {
           ),
         ),
         onTap: () async {
-          final result = await openModal(context, _item, _groups);
+          final result = await EditWidget.openModal(context, _item, _groups);
           if (result != null) {
             _onEdit(result);
           }
         },
-      ),
-    );
-  }
-}
-
-Future<BaasboxData?> openModal(BuildContext context, BaasboxData item, List<BaasboxData> _groups) async {
-  return await showDialog(
-    context: context,
-    builder: (BuildContext context) => Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(6.0),
-      ),
-      elevation: 0.0,
-      backgroundColor: Colors.transparent,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(8.0),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10.0,
-              offset: Offset(0.0, 10.0),
-            ),
-          ],
-        ),
-        child: DetailItem(item, _groups),
-      ),
-    ),
-  );
-}
-
-class DetailItem extends StatelessWidget {
-  final BaasboxData _item;
-  final List<BaasboxData> _groups;
-
-  const DetailItem(this._item, this._groups, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final titleController = TextEditingController(text: "${_item.fields["title"] ?? ""}");
-    final detailController = TextEditingController(text: "${_item.fields["detail"] ?? ""}");
-    final codeController = TextEditingController(text: "${_item.fields["code"] ?? ""}");
-    final priceController = TextEditingController(text: _item.getAsDouble("price").money());
-
-    final ValueNotifier<String> valueGroup = ValueNotifier<String>("Grupo 1");
-
-    return Container(
-      width: 700.0,
-      margin: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
-            child: Text("Título"),
-          ),
-          TextField(key: const ObjectKey("TITLE"), controller: titleController),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-            child: Text("Código"),
-          ),
-          TextField(
-            key: const ObjectKey("CODE"),
-            controller: codeController,
-            maxLines: 1,
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-            child: Text("Detalhes"),
-          ),
-          TextField(
-            key: const ObjectKey("DETAIL"),
-            controller: detailController,
-            maxLines: 6,
-          ),
-          Row(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-                    child: Text("Grupo"),
-                  ),
-                  SizedBox(
-                    width: 200.0,
-                    child: AnimatedBuilder(
-                      // [AnimatedBuilder] accepts any [Listenable] subtype.
-                      animation: valueGroup,
-                      builder: (BuildContext context, Widget? child) {
-                        return DecoratedBox(
-                          decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(Radius.circular(5.0)), border: Border.all(color: AppColors.queenBlue)),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(8.0, 3.0, 4.0, 3.0),
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              underline: Container(),
-                              value: valueGroup.value,
-                              onChanged: (String? value) {
-                                valueGroup.value = value!;
-                              },
-                              items: _groups.map<DropdownMenuItem<String>>((BaasboxData value) {
-                                return DropdownMenuItem<String>(
-                                  value: value.getAsString('name'),
-                                  child: Text(value.getAsString('name')),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        );
-
-                        //Text('${counterValueNotifier.value}');
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                width: 12.0,
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-                    child: Text("Preço"),
-                  ),
-                  SizedBox(
-                    width: 200.0,
-                    child: TextField(
-                      key: const ObjectKey("PRICE"),
-                      controller: priceController,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
-                      ],
-                      decoration: const InputDecoration(prefix: Text('\$')),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  child: const Text("Salvar"),
-                  style: TextButton.styleFrom(
-                      padding: const EdgeInsets.all(16.0), primary: AppColors.white, backgroundColor: AppColors.buttonColor),
-                  onPressed: () {
-                    final data = BaasboxData(id: _item.id, fields: {
-                      'title': titleController.text,
-                      'code': codeController.text,
-                      'detail': detailController.text,
-                      'price': double.parse(priceController.text.replaceAll(".", "").replaceAll(",", ".")),
-                    });
-                    Navigator.pop(context, data);
-                  },
-                ),
-                TextButton(
-                  child: const Text("Cancelar"),
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.all(16.0),
-                    primary: AppColors.buttonColor,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
