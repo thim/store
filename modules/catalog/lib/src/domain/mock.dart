@@ -6,16 +6,16 @@ final mockList = [
     "code": "1",
     "title": "Item 1",
     "detail": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-    "group": "Group1",
+    "group": "Grupo 1",
     "price": 15.7
   }),
-  BaasboxData.fromJson({"_id": "2", "code": "2", "title": "Item 2", "detail": "Lorem ipsum dolor sit.", "group": "Group1", "price": 15.5}),
+  BaasboxData.fromJson({"_id": "2", "code": "2", "title": "Item 2", "detail": "Lorem ipsum dolor sit.", "group": "Grupo 1", "price": 15.5}),
   BaasboxData.fromJson({
     "_id": "3",
     "code": "3",
     "title": "Item 3",
     "detail": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-    "group": "Group2",
+    "group": "Grupo 2",
     "price": 15.5
   }),
   BaasboxData.fromJson({
@@ -23,7 +23,7 @@ final mockList = [
     "code": "4",
     "title": "Item 4",
     "detail": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-    "group": "Group2",
+    "group": "Grupo 2",
     "price": 15.5
   }),
   BaasboxData.fromJson({
@@ -31,7 +31,7 @@ final mockList = [
     "code": "5",
     "title": "Item 5",
     "detail": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-    "group": "Group2",
+    "group": "Grupo 2",
     "price": 15.5
   }),
   BaasboxData.fromJson({
@@ -39,18 +39,18 @@ final mockList = [
     "code": "6",
     "title": "Item 6",
     "detail": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-    "group": "Group2",
+    "group": "Grupo 2",
     "price": 15.5
   }),
 ];
 
-final listGroup = [
+final mockGroup = [
   BaasboxData.fromJson({
-    "_id": "1",
-    "name": "Group1",
+    "_id": "group1",
+    "name": "Grupo 1",
   }),
   BaasboxData.fromJson({
-    "_id": "2",
-    "name": "Group2",
+    "_id": "group2",
+    "name": "Grupo 2",
   }),
 ];

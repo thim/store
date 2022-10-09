@@ -1,15 +1,16 @@
 import 'package:catalog/src/domain/data.dart';
+import 'package:catalog/src/presentation/form/form_extension.dart';
 import 'package:core/core_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 class CatalogList extends StatelessWidget {
   final List<BaasboxData> _list;
+  final List<BaasboxData> _groups;
   final Function(BaasboxData) _onDelete;
   final Function(BaasboxData) _onEdit;
 
-  const CatalogList(this._list, this._onDelete, this._onEdit, {Key? key}) : super(key: key);
+  const CatalogList(this._list, this._groups, this._onDelete, this._onEdit, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class CatalogList extends StatelessWidget {
         itemCount: _list.length,
         itemBuilder: (context, index) {
           final item = _list[index];
-          return CatalogItem(item, () {
+          return CatalogItem(item, _groups, () {
             _onDelete(item);
           }, _onEdit);
         },
@@ -40,10 +41,11 @@ class CatalogList extends StatelessWidget {
 
 class CatalogItem extends StatelessWidget {
   final BaasboxData _item;
+  final List<BaasboxData> _groups;
   final Function() _onDelete;
   final Function(BaasboxData) _onEdit;
 
-  const CatalogItem(this._item, this._onDelete, this._onEdit, {Key? key}) : super(key: key);
+  const CatalogItem(this._item, this._groups, this._onDelete, this._onEdit, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +104,7 @@ class CatalogItem extends StatelessWidget {
           ),
         ),
         onTap: () async {
-          final result = await openModal(context, _item);
+          final result = await openModal(context, _item, _groups);
           if (result != null) {
             _onEdit(result);
           }
@@ -112,7 +114,7 @@ class CatalogItem extends StatelessWidget {
   }
 }
 
-Future<BaasboxData?> openModal(BuildContext context, BaasboxData item) async {
+Future<BaasboxData?> openModal(BuildContext context, BaasboxData item, List<BaasboxData> _groups) async {
   return await showDialog(
     context: context,
     builder: (BuildContext context) => Dialog(
@@ -134,7 +136,7 @@ Future<BaasboxData?> openModal(BuildContext context, BaasboxData item) async {
             ),
           ],
         ),
-        child: DetailItem(item),
+        child: DetailItem(item, _groups),
       ),
     ),
   );
@@ -142,8 +144,9 @@ Future<BaasboxData?> openModal(BuildContext context, BaasboxData item) async {
 
 class DetailItem extends StatelessWidget {
   final BaasboxData _item;
+  final List<BaasboxData> _groups;
 
-  const DetailItem(this._item, {Key? key}) : super(key: key);
+  const DetailItem(this._item, this._groups, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +154,8 @@ class DetailItem extends StatelessWidget {
     final detailController = TextEditingController(text: "${_item.fields["detail"] ?? ""}");
     final codeController = TextEditingController(text: "${_item.fields["code"] ?? ""}");
     final priceController = TextEditingController(text: _item.getAsDouble("price").money());
+
+    final ValueNotifier<String> valueGroup = ValueNotifier<String>("Grupo 1");
 
     return Container(
       width: 700.0,
@@ -182,20 +187,75 @@ class DetailItem extends StatelessWidget {
             controller: detailController,
             maxLines: 6,
           ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-            child: Text("Preço"),
-          ),
-          SizedBox(
-            width: 200.0,
-            child: TextField(
-              key: const ObjectKey("PRICE"),
-              controller: priceController,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
-              ],
-              decoration: const InputDecoration(prefix: Text('\$')),
-            ),
+          Row(
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                    child: Text("Grupo"),
+                  ),
+                  SizedBox(
+                    width: 200.0,
+                    child: AnimatedBuilder(
+                      // [AnimatedBuilder] accepts any [Listenable] subtype.
+                      animation: valueGroup,
+                      builder: (BuildContext context, Widget? child) {
+                        return DecoratedBox(
+                          decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(5.0)), border: Border.all(color: AppColors.queenBlue)),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8.0, 3.0, 4.0, 3.0),
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              underline: Container(),
+                              value: valueGroup.value,
+                              onChanged: (String? value) {
+                                valueGroup.value = value!;
+                              },
+                              items: _groups.map<DropdownMenuItem<String>>((BaasboxData value) {
+                                return DropdownMenuItem<String>(
+                                  value: value.getAsString('name'),
+                                  child: Text(value.getAsString('name')),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        );
+
+                        //Text('${counterValueNotifier.value}');
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 12.0,
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
+                    child: Text("Preço"),
+                  ),
+                  SizedBox(
+                    width: 200.0,
+                    child: TextField(
+                      key: const ObjectKey("PRICE"),
+                      controller: priceController,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
+                      ],
+                      decoration: const InputDecoration(prefix: Text('\$')),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
           Container(
             padding: const EdgeInsets.all(8.0),
@@ -233,11 +293,5 @@ class DetailItem extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-extension MoneyExt on double {
-  String money() {
-    return toStringAsFixed(2).replaceAll('.', ',');
   }
 }

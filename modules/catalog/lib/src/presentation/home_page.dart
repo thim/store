@@ -1,3 +1,4 @@
+import 'package:catalog/src/domain/mock.dart';
 import 'package:core/core_style.dart';
 import 'package:flutter/material.dart';
 
@@ -78,7 +79,7 @@ class Menu extends StatelessWidget {
                   size: 24.0,
                 ),
                 onTap: () async {
-                  final result = await openModal(context, BaasboxData(id: "123", fields: {}));
+                  final result = await openModal(context, BaasboxData(id: "123", fields: {}), mockGroup);
                   if (result != null) {
                     _bloc.add(result);
                   }
@@ -157,6 +158,7 @@ class _ListPageState extends State<ListPage> {
             if (snapshot.hasData) {
               return CatalogList(
                 snapshot.data!,
+                mockGroup,
                 (item) {
                   widget._bloc.delete(item.id);
                 },
