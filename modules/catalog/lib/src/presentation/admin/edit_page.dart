@@ -2,11 +2,11 @@ import 'package:catalog/src/domain/mock.dart';
 import 'package:core/core_style.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/data.dart';
-import 'form/form_combo.dart';
-import 'form/form_money.dart';
-import 'form/form_notifier.dart';
-import 'form/form_text.dart';
+import '../../domain/data.dart';
+import '../form/form_combo.dart';
+import '../form/form_money.dart';
+import '../form/form_notifier.dart';
+import '../form/form_text.dart';
 
 class EditPage extends StatefulWidget {
   static var route = "/edit";

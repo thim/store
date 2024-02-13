@@ -13,8 +13,9 @@ void main() async {
 
   final boot = await CoreModule().init([firebaseCoreModule, authCoreModules, catalogCoreModules, appCoreModules]);
 
-  final route = boot["initialRoute"] as RouteParams;
-  print("route = ${route.page} ${route.args}");
-
+  final route = boot.values.whereType<RouteParams>().firstOrNull;
+  if (route is RouteParams) {
+    print("route = ${route.page} ${route.args}");
+  }
   exit(0);
 }

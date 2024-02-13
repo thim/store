@@ -2,26 +2,26 @@ import 'package:catalog/src/domain/mock.dart';
 import 'package:core/core_style.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/data.dart';
+import '../../domain/data.dart';
 import 'catalog/catalog_widget.dart';
 import 'catalog/edit_widget.dart';
 import 'catalog/group_widget.dart';
 import 'catalog/search_widget.dart';
-import 'home_bloc.dart';
+import 'catalog_bloc.dart';
 
-class HomePage extends StatefulWidget {
-  static var route = "/home";
+class CatalogPage extends StatefulWidget {
+  static var route = "/catalog";
 
-  const HomePage({Key? key}) : super(key: key);
+  const CatalogPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _HomePageState();
+    return _CatalogPageState();
   }
 }
 
-class _HomePageState extends State<HomePage> {
-  final _bloc = HomeBloc();
+class _CatalogPageState extends State<CatalogPage> {
+  final _bloc = CatalogBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class Menu extends StatelessWidget {
-  final HomeBloc _bloc;
+  final CatalogBloc _bloc;
 
   const Menu(this._bloc, {Key? key}) : super(key: key);
 
@@ -95,7 +95,7 @@ class Menu extends StatelessWidget {
 }
 
 class GroupPage extends StatefulWidget {
-  final HomeBloc _bloc;
+  final CatalogBloc _bloc;
 
   const GroupPage(this._bloc, {Key? key}) : super(key: key);
 
@@ -137,7 +137,7 @@ class _GroupPageState extends State<GroupPage> {
 }
 
 class ListPage extends StatefulWidget {
-  final HomeBloc _bloc;
+  final CatalogBloc _bloc;
 
   const ListPage(this._bloc, {Key? key}) : super(key: key);
 
@@ -176,7 +176,7 @@ class _ListPageState extends State<ListPage> {
 }
 
 class FilterPage extends StatefulWidget {
-  final HomeBloc _bloc;
+  final CatalogBloc _bloc;
 
   const FilterPage(this._bloc, {Key? key}) : super(key: key);
 

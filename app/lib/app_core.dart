@@ -6,7 +6,8 @@ List<ModuleBase> appCoreModules() => [
         if (map[refreshedKey]) {
           map[initialRouteKey] = RouteParams("/home", {});
         } else {
-          map[initialRouteKey] = RouteParams("/login", {"nextPage": "/home"});
+          map[initialRouteKey] = RouteParams("/home", {});
+          //map[initialRouteKey] = RouteParams("/login", {"nextPage": "/home"});
         }
       }),
     ];

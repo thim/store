@@ -47,10 +47,30 @@ final mockList = [
 final mockGroup = [
   BaasboxData.fromJson({
     "_id": "group1",
-    "name": "Grupo 1",
+    "name": "Destaques",
   }),
   BaasboxData.fromJson({
     "_id": "group2",
-    "name": "Grupo 2",
+    "name": "Salgados",
+  }),
+  BaasboxData.fromJson({
+    "_id": "group3",
+    "name": "Sobremesas",
+  }),
+  BaasboxData.fromJson({
+    "_id": "group4",
+    "name": "Bebidas",
+  }),
+  BaasboxData.fromJson({
+    "_id": "group5",
+    "name": "Salgados",
+  }),
+  BaasboxData.fromJson({
+    "_id": "group6",
+    "name": "Croissant",
+  }),
+  BaasboxData.fromJson({
+    "_id": "group7",
+    "name": "Adicionais",
   }),
 ];

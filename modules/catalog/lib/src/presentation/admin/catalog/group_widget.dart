@@ -1,6 +1,5 @@
 import 'package:core/core_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class GroupList extends StatelessWidget {
   final List<String> _list;

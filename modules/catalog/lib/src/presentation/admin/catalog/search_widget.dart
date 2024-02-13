@@ -1,12 +1,11 @@
 import 'package:core/core_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-import '../home_bloc.dart';
+import '../catalog_bloc.dart';
 
 class SearchBox extends StatelessWidget {
   final textController = TextEditingController(text: '');
-  final HomeBloc _bloc;
+  final CatalogBloc _bloc;
 
   SearchBox(this._bloc, {Key? key}) : super(key: key);
 

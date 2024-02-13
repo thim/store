@@ -4,7 +4,7 @@ abstract class AnalyticsProvider {
 
 class TrackData {
   final String name;
-  final Map<String, Object> params;
+  final Map<String, dynamic> params;
 
   TrackData(this.name, this.params);
 }
@@ -14,6 +14,10 @@ class Analytics {
 
   void register(List<AnalyticsProvider> list) {
     _providers.addAll(list);
+  }
+
+  Iterable<T> getProviders<T>() {
+    return _providers.whereType<T>();
   }
 
   void sendEvent(TrackData data) {

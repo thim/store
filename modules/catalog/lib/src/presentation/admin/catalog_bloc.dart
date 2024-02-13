@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:developer';
 
-import '../domain/data.dart';
-import '../domain/mock.dart';
+import '../../domain/data.dart';
+import '../../domain/mock.dart';
 
-class HomeBloc {
+class CatalogBloc {
   final _data = StreamController<List<BaasboxData>>.broadcast();
   final _group = StreamController<List<String>>.broadcast();
   final _filter = StreamController<String>.broadcast();
@@ -19,7 +19,7 @@ class HomeBloc {
   final List<BaasboxData> _cache = [];
   final List<String> _cacheGroup = [];
 
-  HomeBloc();
+  CatalogBloc();
 
   void loadData() async {
     await Future.delayed(const Duration(seconds: 1));

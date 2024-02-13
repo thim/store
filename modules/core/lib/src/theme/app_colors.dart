@@ -10,6 +10,7 @@ class AppColors {
   static const Color buttonTextColor = white;
   static const Color inputColor = white;
   static const Color backgroundColor = offWhite;
+  static const Color selectedColor = queenBlue;
 
   // Gray scale colors
   static const Color grey = Color(0xFF3e3e3e);

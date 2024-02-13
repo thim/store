@@ -2,10 +2,10 @@ import 'package:catalog/src/domain/data.dart';
 import 'package:core/core_style.dart';
 import 'package:flutter/material.dart';
 
-import '../form/form_combo.dart';
-import '../form/form_money.dart';
-import '../form/form_notifier.dart';
-import '../form/form_text.dart';
+import '../../form/form_combo.dart';
+import '../../form/form_money.dart';
+import '../../form/form_notifier.dart';
+import '../../form/form_text.dart';
 
 class EditWidget extends StatelessWidget {
   final BaasboxData _item;

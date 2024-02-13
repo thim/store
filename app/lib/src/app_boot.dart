@@ -4,7 +4,6 @@ import 'package:catalog/catalog_module.dart';
 import 'package:core/core_flutter.dart';
 import 'package:flutter/material.dart';
 
-import '../app_core.dart';
 import '../app_module.dart';
 
 Future<void> bootstrap(BuildContext context) async {
@@ -12,7 +11,7 @@ Future<void> bootstrap(BuildContext context) async {
 
   final boot = await flutterModule.init([firebaseModule, authModule, catalogModule, appModule]);
 
-  final route = boot[initialRouteKey];
+  final route = boot.values.whereType<RouteParams>().firstOrNull;
 
   if (route is RouteParams) {
     Navigator.of(context).pushReplacementNamed(route.page, arguments: route.args);
